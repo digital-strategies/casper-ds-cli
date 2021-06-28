@@ -1,6 +1,6 @@
 {
-  "name": "cspr-rpc-deploy",
-  "version": "1.0.0",
+  "name": "casper-ds",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -14,11 +14,19 @@
     "axios": "^0.21.1",
     "casper-client-sdk": "^1.4.2",
     "ethers": "^5.3.1",
+    "moment": "^2.29.1",
     "ts-node": "^10.0.0",
     "typescript": "^4.3.4",
     "yargs": "^17.0.1"
   },
   "devDependencies": {
-    "@types/yargs": "^17.0.0"
+    "@types/node-fetch": "^2.5.10",
+    "@types/yargs": "^17.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.28.0",
+    "@typescript-eslint/parser": "^4.28.0",
+    "eslint": "^7.29.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.23.4",
+    "node-fetch": "^2.6.1"
   }
 }
