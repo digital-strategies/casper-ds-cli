@@ -20,14 +20,21 @@ export function transfer({
   amount: BigNumberish;
   memo?: number;
   gasPrice?: number;
-  timestamp?: number;
+  timestamp?: number | string;
   ttl?: number;
   network: string;
 }): any {
   // for native-transfers payment price is fixed
   const paymentAmount = ethers.utils.parseUnits('0.00001', 9);
 
-  const deployParams = new DeployUtil.DeployParams(from.publicKey, network, gasPrice, ttl, [], timestamp);
+  const deployParams = new DeployUtil.DeployParams(
+    from.publicKey,
+    network,
+    gasPrice,
+    ttl,
+    [],
+    new Date(timestamp).getTime()
+  );
 
   // we create public key from account-address (in fact it is hex representation of public-key with added prefix)
   const toPublicKey = PublicKey.fromHex(to);
@@ -57,11 +64,18 @@ export function undelegate({
   stakingContractHash?: string;
   paymentAmount?: BigNumberish;
   gasPrice?: number;
-  timestamp?: number;
+  timestamp?: number | string;
   ttl?: number;
   network: string;
 }): any {
-  const deployParams = new DeployUtil.DeployParams(from.publicKey, network, gasPrice, ttl, [], timestamp);
+  const deployParams = new DeployUtil.DeployParams(
+    from.publicKey,
+    network,
+    gasPrice,
+    ttl,
+    [],
+    new Date(timestamp).getTime()
+  );
   const _stakingContractHash = stakingContractHash || (STAKING_CONTRACT as any)[network];
   const session = DeployUtil.ExecutableDeployItem.newStoredContractByHash(
     Uint8Array.from(Buffer.from(_stakingContractHash, 'hex')),

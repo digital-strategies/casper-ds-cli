@@ -83,7 +83,7 @@ const argv = yargs(hideBin(process.argv))
           default: 1,
         })
         .option('timestamp', {
-          describe: 'timestamp (unix in ms)',
+          describe: 'timestamp (ISO or unix in ms)',
           default: () => new Date().getTime(),
           defaultDescription: 'current',
         })
@@ -146,7 +146,7 @@ const argv = yargs(hideBin(process.argv))
           default: ethers.utils.parseUnits('0.5', 9).toString(),
         })
         .option('timestamp', {
-          describe: 'timestamp (unix in ms)',
+          describe: 'timestamp (ISO or unix in ms)',
           default: () => new Date().getTime(),
           defaultDescription: 'current',
         })
