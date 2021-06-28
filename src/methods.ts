@@ -1,9 +1,10 @@
 /* eslint-disable no-underscore-dangle */
 import { DeployUtil, PublicKey, Keys, RuntimeArgs, CLValue } from 'casper-client-sdk';
 import { BigNumberish, ethers } from 'ethers';
+import moment from 'moment';
 
 import { createClient } from './client';
-import { DEFAULT_TTL, RPC, STAKING_CONTRACT } from './constants';
+import { DEFAULT_TTL, RPC, SECOND_MILLIS, STAKING_CONTRACT } from './constants';
 
 export function transfer({
   from,
@@ -93,11 +94,37 @@ export function undelegate({
   return DeployUtil.deployToJson(signedDeploy);
 }
 
-export async function deploy({ json, rpc }: { json: any; rpc?: string }): Promise<string> {
+export async function deploy({ json, rpc, wait }: { json: any; rpc?: string; wait: boolean }): Promise<string> {
   const deploy = DeployUtil.deployFromJson(json);
   const rpcUrl = rpc || (RPC as any)[deploy.header.chainName];
   const client = createClient(rpcUrl);
+
+  if (wait) {
+    const txTimestamp = new Date(deploy.header.timestamp).getTime();
+    const txTimestampWithBuffer = txTimestamp + 5 * SECOND_MILLIS;
+    const diff = txTimestampWithBuffer - new Date().getTime();
+    if (diff > 0) {
+      console.log(
+        `Waiting ${moment.duration(diff, 'milliseconds').humanize()} to execute tx at ~${new Date(
+          txTimestamp
+        ).toISOString()}`
+      );
+    }
+    await sleep(diff);
+    console.log(`Executing now (${new Date().toISOString()})...`);
+  }
+
   const txHash = await client.putDeploy(deploy);
 
   return txHash;
+}
+
+const maxSleep = 0x7fffffff;
+async function sleep(ms: number): Promise<void> {
+  if (ms > maxSleep) {
+    await sleep(maxSleep);
+    return sleep(ms - maxSleep);
+  }
+
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }

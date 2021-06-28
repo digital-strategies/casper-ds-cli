@@ -11,6 +11,7 @@ import { readKeypair } from './client';
 interface IDeployParams {
   json: string;
   rpc?: string;
+  wait?: boolean;
 }
 
 interface ITransferParams {
@@ -180,6 +181,10 @@ const argv = yargs(hideBin(process.argv))
         .option('rpc', {
           describe: 'RPC URL',
           defaultDescription: JSON.stringify(RPC),
+        })
+        .option('wait', {
+          describe: 'force script to wait until tx timestamp matches current timestamp',
+          boolean: true,
         }),
     handler: () => {},
   })
@@ -198,7 +203,7 @@ async function handler(argv: { [key: string]: any }) {
 }
 
 async function handleDeploy(argv: IDeployParams) {
-  const txHash = await deploy({ json: JSON.parse(argv.json), rpc: argv.rpc });
+  const txHash = await deploy({ json: JSON.parse(argv.json), rpc: argv.rpc, wait: argv.wait });
   console.log(`\nTx hash:\n\n${txHash}`);
 }
 
