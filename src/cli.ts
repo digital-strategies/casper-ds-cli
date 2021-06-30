@@ -227,9 +227,10 @@ async function handleTransfer(argv: ITransferParams) {
   });
 
   if (argv.broadcast) {
-    await handleDeploy({ json, rpc: argv.rpc });
+    await handleDeploy({ json: stringifyJsonDeploy(json, true), rpc: argv.rpc });
   } else {
-    stringifyJsonDeploy(json, argv.cleanjson);
+    const stringified = stringifyJsonDeploy(json, argv.cleanjson);
+    console.log(`\nSigned transaction:\n\n${stringified}`);
   }
 }
 
@@ -248,9 +249,10 @@ async function handleUndelegate(argv: IUndelegateParams) {
   });
 
   if (argv.broadcast) {
-    await handleDeploy({ json, rpc: argv.rpc });
+    await handleDeploy({ json: stringifyJsonDeploy(json, true), rpc: argv.rpc });
   } else {
-    stringifyJsonDeploy(json, argv.cleanjson);
+    const stringified = stringifyJsonDeploy(json, argv.cleanjson);
+    console.log(`\nSigned transaction:\n\n${stringified}`);
   }
 }
 
@@ -259,7 +261,8 @@ function stringifyJsonDeploy(json: any, clean: boolean) {
   if (!clean) {
     stringified = JSON.stringify(stringified);
   }
-  console.log(`\nSigned transaction:\n\n${stringified}`);
+
+  return stringified;
 }
 
 handler(argv);
