@@ -21,6 +21,7 @@ interface ITransferParams {
   pk: string;
   ttl?: number;
   gasprice?: number;
+  payment?: string;
   timestamp?: number;
   memo?: number;
   network?: string;
@@ -82,6 +83,10 @@ const argv = yargs(hideBin(process.argv))
         .option('gasprice', {
           describe: 'gas price',
           default: 1,
+        })
+        .option('payment', {
+          describe: 'amount to pay for the execution of the tx in motes (1 CSPR = 1 000 000 000 motes)',
+          default: ethers.utils.parseUnits('0.00001', 9).toString(),
         })
         .option('timestamp', {
           describe: 'timestamp (ISO or unix in ms)',
@@ -215,6 +220,7 @@ async function handleTransfer(argv: ITransferParams) {
     amount: argv.amount,
     network: argv.network,
     gasPrice: argv.gasprice,
+    paymentAmount: argv.payment,
     memo: argv.memo,
     timestamp: argv.timestamp,
     ttl: argv.ttl,

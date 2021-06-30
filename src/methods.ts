@@ -12,6 +12,7 @@ export function transfer({
   amount,
   memo = 0,
   gasPrice = 1,
+  paymentAmount = ethers.utils.parseUnits('0.00001', 9),
   timestamp = new Date().getTime(),
   ttl = DEFAULT_TTL,
   network,
@@ -21,12 +22,13 @@ export function transfer({
   amount: BigNumberish;
   memo?: number;
   gasPrice?: number;
+  paymentAmount?: BigNumberish;
   timestamp?: number | string;
   ttl?: number;
   network: string;
 }): any {
   // for native-transfers payment price is fixed
-  const paymentAmount = ethers.utils.parseUnits('0.00001', 9);
+  // const paymentAmount = ethers.utils.parseUnits('0.00001', 9);
 
   const deployParams = new DeployUtil.DeployParams(
     from.publicKey,
