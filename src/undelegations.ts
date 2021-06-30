@@ -38,7 +38,7 @@ export default async function findUndelegations(): Promise<void> {
   undelegations = await loadCsv();
   console.info(`loaded ${undelegations.length} undelegations`);
 
-  const startBlock = getMinBlock(undelegations);
+  const startBlock = getStartBlock(undelegations);
   console.info(`start block is ${startBlock}`);
 
   await scanBlocksForUndelegations(startBlock);
@@ -57,10 +57,10 @@ async function loadCsv(): Promise<IUndelegation[]> {
   }
 }
 
-function getMinBlock(undelegations: IUndelegation[]): number {
+function getStartBlock(undelegations: IUndelegation[]): number {
   const blocks = [...undelegations.map((u) => u.block), MIN_BLOCK];
 
-  return Math.min(...blocks) + 1;
+  return Math.max(...blocks) + 1;
 }
 
 async function scanBlocksForUndelegations(startBlock: number): Promise<void> {
