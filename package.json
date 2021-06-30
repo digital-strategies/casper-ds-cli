@@ -6,6 +6,7 @@
   "bin": "build/index.js",
   "scripts": {
     "dev": "ts-node ./src/index.ts",
+    "undelegations": "ts-node ./src/undelegations.ts",
     "start": "node ./build/index.js",
     "build": "tsc",
     "pkg": "npm run build && pkg .",
@@ -18,6 +19,7 @@
     "axios": "^0.21.1",
     "casper-client-sdk": "^1.4.2",
     "ethers": "^5.3.1",
+    "json-2-csv": "^3.14.1",
     "moment": "^2.29.1",
     "ts-node": "^10.0.0",
     "typescript": "^4.3.4",
