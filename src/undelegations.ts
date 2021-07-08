@@ -2,8 +2,7 @@
 import { json2csvAsync, csv2jsonAsync } from 'json-2-csv';
 import fs from 'fs';
 import path from 'path';
-import { BigNumberish, ethers } from 'ethers';
-import moment from 'moment';
+import { ethers } from 'ethers';
 
 import { createJsonClient } from './client';
 import { MAINNET_RPC } from './constants';

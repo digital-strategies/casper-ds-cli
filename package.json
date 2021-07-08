@@ -6,6 +6,7 @@
   "bin": "build/index.js",
   "scripts": {
     "dev": "ts-node ./src/index.ts",
+    "methods": "ts-node ./src/methods.ts",
     "undelegations": "ts-node ./src/undelegations.ts",
     "start": "node ./build/index.js",
     "build": "tsc",

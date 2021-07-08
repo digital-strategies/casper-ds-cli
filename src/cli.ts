@@ -12,6 +12,8 @@ interface IDeployParams {
   json: string;
   rpc?: string;
   wait?: boolean;
+  balanceAware?: boolean;
+  nextEra?: boolean;
 }
 
 interface ITransferParams {
@@ -188,7 +190,15 @@ const argv = yargs(hideBin(process.argv))
           defaultDescription: JSON.stringify(RPC),
         })
         .option('wait', {
-          describe: 'force script to wait until tx timestamp matches current timestamp',
+          describe: 'wait until tx timestamp matches current timestamp',
+          boolean: true,
+        })
+        .option('balance-aware', {
+          describe: 'wait until sender has enough balance to execute the tx',
+          boolean: true,
+        })
+        .option('next-era', {
+          describe: 'only deploy in the next era after tx timestamp',
           boolean: true,
         }),
     handler: () => {},
@@ -208,7 +218,13 @@ async function handler(argv: { [key: string]: any }) {
 }
 
 async function handleDeploy(argv: IDeployParams) {
-  const txHash = await deploy({ json: JSON.parse(argv.json), rpc: argv.rpc, wait: argv.wait });
+  const txHash = await deploy({
+    json: JSON.parse(argv.json),
+    rpc: argv.rpc,
+    wait: argv.wait || argv.nextEra,
+    balanceAware: argv.balanceAware,
+    nextEra: argv.nextEra,
+  });
   console.log(`\nTx hash:\n\n${txHash}`);
 }
 
