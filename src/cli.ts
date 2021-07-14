@@ -110,7 +110,8 @@ const argv = yargs(hideBin(process.argv))
         .option('rpc', {
           describe: 'RPC URL (used if broadcast = true)',
           defaultDescription: JSON.stringify(RPC),
-        }),
+        })
+        .strict(),
     handler: () => {},
   })
   .command({
@@ -173,7 +174,8 @@ const argv = yargs(hideBin(process.argv))
         .option('contract', {
           describe: 'staking contract hash',
           defaultDescription: JSON.stringify(STAKING_CONTRACT),
-        }),
+        })
+        .strict(),
     handler: () => {},
   })
   .command({
@@ -200,7 +202,8 @@ const argv = yargs(hideBin(process.argv))
         .option('next-era', {
           describe: 'only deploy in the next era after tx timestamp',
           boolean: true,
-        }),
+        })
+        .strict(),
     handler: () => {},
   })
   .demandCommand().argv;
