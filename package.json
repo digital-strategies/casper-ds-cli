@@ -1,11 +1,12 @@
 {
   "name": "casper-ds",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "",
   "main": "build/index.js",
   "bin": "build/index.js",
   "scripts": {
     "dev": "ts-node ./src/index.ts",
+    "prod": "./dist/casper-ds",
     "methods": "ts-node ./src/methods.ts",
     "undelegations": "ts-node ./src/undelegations.ts",
     "start": "node ./build/index.js",
