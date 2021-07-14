@@ -143,8 +143,8 @@ export async function deploy({
 
   if (balanceAware) {
     const amount = extractAmount(deploy);
-    const targetAccountHash = extractTargetAccountHash(deploy);
-    await waitForBalance(client, targetAccountHash, amount);
+    const singerAccountHex = extractSignerAcccountHex(deploy);
+    await waitForBalance(client, singerAccountHex, amount);
   }
 
   const txHash = await client.putDeploy(deploy);
@@ -165,14 +165,16 @@ function extractTargetAccountHash(deploy: DeployUtil.Deploy): string {
   return deploy.session.getArgByName('target').bytes;
 }
 
-async function waitForBalance(client: CasperClient, accountHash: string, amount: BigNumberish): Promise<void> {
-  console.log(
-    `🕒 waiting until account hash ${accountHash} has at least ${ethers.utils.formatUnits(amount, 9)} CSPR...`
-  );
+function extractSignerAcccountHex(deploy: DeployUtil.Deploy): string {
+  return deploy.approvals[0].signer;
+}
+
+async function waitForBalance(client: CasperClient, accountHex: string, amount: BigNumberish): Promise<void> {
+  console.log(`🕒 waiting until account ${accountHex} has at least ${ethers.utils.formatUnits(amount, 9)} CSPR...`);
   let hasEnoughBalance = false;
   let balance: BigNumberish = '0';
   do {
-    balance = await client.balanceOfByAccountHash(accountHash);
+    balance = await client.balanceOfByPublicKey(PublicKey.fromHex(accountHex));
     hasEnoughBalance = balance.gt(amount);
 
     if (!hasEnoughBalance) {
@@ -180,7 +182,7 @@ async function waitForBalance(client: CasperClient, accountHash: string, amount:
     }
   } while (!hasEnoughBalance);
 
-  console.log(`✅ ${accountHash} has ${ethers.utils.formatUnits(balance, 9)} CSPR`);
+  console.log(`✅ ${accountHex} has ${ethers.utils.formatUnits(balance, 9)} CSPR`);
 }
 
 async function waitForNextEraAfterTimestamp(jsonClient: CasperServiceByJsonRPC, txTimestamp: string): Promise<void> {
