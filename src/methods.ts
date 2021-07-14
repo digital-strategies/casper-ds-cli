@@ -129,6 +129,15 @@ export async function deploy({
   const rpcUrl = rpc || (RPC as any)[deploy.header.chainName];
   const client = createClient(rpcUrl);
   const jsonClient = createJsonClient(rpcUrl);
+  if (wait) {
+    console.log('ℹ will wait until tx timestamp reached');
+  }
+  if (nextEra) {
+    console.log('ℹ will wait until next era after tx timestamp');
+  }
+  if (balanceAware) {
+    console.log('ℹ will wait until sender has enough balance');
+  }
 
   if (wait) {
     const txTimestamp = new Date(deploy.header.timestamp).getTime();
